@@ -7,7 +7,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
-var GtfsRealtimeBindings = require('gtfs-realtime-bindings');
+var GtfsRealtimeBindings = require('gtfs-realtime');
 var request = require('request');
 
 
@@ -46,9 +46,7 @@ module.exports = app;
 
 var requestSettings = {
   method: 'GET',
-  username = "RTDgtfsRT",
-  password = "realT!m3Feed",
-  url = "http://" + username + ":" + password + "@www.rtd-denver.com/google_sync";
+  url: "http://RTDgtfsRT:realT!m3Feed@www.rtd-denver.com/google_sync",
   encoding: null
 };
 request(requestSettings, function (error, response, body) {
