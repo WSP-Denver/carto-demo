@@ -1,0 +1,32 @@
+{
+  "requires": true,
+  "lockfileVersion": 1,
+  "dependencies": {
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.16.0",
+    "gtfs-realtime-bindings": "0.0.4",
+    "http-errors": "~1.6.2",
+    "jade": "~1.11.0",
+    "morgan": "~1.9.0",
+    "request": "^2.88.0"
+  },
+  "name": "carto-demo",
+  "version": "1.0.0",
+  "description": "Demonstration of carto, mapbox and gtfs-rt data",
+  "main": "app.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WSP-Denver/carto-demo.git"
+  },
+  "author": "Josh Gipper",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WSP-Denver/carto-demo/issues"
+  },
+  "homepage": "https://github.com/WSP-Denver/carto-demo#readme"
+}
