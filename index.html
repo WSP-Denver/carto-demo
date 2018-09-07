@@ -15,18 +15,26 @@
                 height: 100%;
                 width: 100%;
             }
+            .popup {
+                padding: 0 12px;
+                min-width: 200px;
+            }
         </style>
     </head>
     <body>
         <div id="map"></div>
         <script>
+            mapboxgl.accessToken = 'pk.eyJ1IjoiamdpcHBlciIsImEiOiJjamp6NGdwMHphdGo0M3BwMXN5dWtjOGIyIn0.t38MazjsoIQpGBtvkG0OmQ';
             const map = new mapboxgl.Map({
                 container: 'map',
-                style: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
-                center: [0, 30],
-                zoom: 2,
+                style: 'mapbox://styles/jgipper/cjlreswle9lwf2rojrgnhsmyg',
+                center: [-104.890233, 39.755458],
+                zoom: 10.0,
                 dragRotate: false
             });
+            var nav = new mapboxgl.NavigationControl();
+            map.addControl(nav, 'top-right');
+
             carto.setDefaultAuth({
                 user: 'cartovl',
                 apiKey: 'default_public'
@@ -35,14 +43,30 @@
             const s = carto.expressions;
             const viz = new carto.Viz({
                 variables: {
-                    size: s.div(s.sqrt(s.prop('pop_min')),100)
+                    size: s.div(s.sqrt(s.prop('pop_min')),100),
+                    name: s.prop('name'),
+                    population: s.prop('pop_min')
                 },
                 width: s.var('size'),
-                //color: s.ramp(s.prop('worldcity'), s.palettes.PRISM),
                 color: s.ramp(s.buckets(s.prop('worldcity'), [1, 0]), s.palettes.PRISM),
                 strokeWidth: 0
             });
             const layer = new carto.Layer('layer', source, viz);
+            const interactivity = new carto.Interactivity(layer);
+            interactivity.on('featureClick', featureEvent => {
+                const coords = featureEvent.coordinates;
+                const feature = featureEvent.features[0];
+                new mapboxgl.Popup()
+                    .setLngLat([coords.lng, coords.lat])
+                    .setHTML('<div class="popup"><h2>' + feature.variables.name.value + '</h2><p>'+ feature.variables.population.value + '</p></div>')
+                    .addTo(map);
+            });
+            interactivity.on('featureEnter', featureEvent => {
+                featureEvent.features[0].color.blendTo('rgba(0, 255, 0, 0.8)', 100);
+            });
+            interactivity.on('featureLeave', featureEvent => {
+                featureEvent.features[0].color.reset();
+            });
             layer.addTo(map);
         </script>
     </body>
